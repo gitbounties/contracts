@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {Base64} from "./node_modules/base64-sol/base64.sol";
-import {Strings} from "./node_modules/@openzeppelin/contracts/utils/Strings.sol";
-import "./node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "../lib/reference/src/lib/ERC6551AccountLib.sol";
-import "../lib/reference/src/interfaces/IERC6551Registry.sol";
+import {Base64} from "base64-sol/base64.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "../src/lib/ERC6551AccountLib.sol";
+import "../src/interfaces/IERC6551Registry.sol";
 
 contract GitbountiesNFT is ERC721 {
     using Strings for uint256;
@@ -13,7 +13,7 @@ contract GitbountiesNFT is ERC721 {
     uint256 public totalTokens; // The total number of bounties minted on this contract, for token indexing
     address public immutable implementation; // Gitbounties6551Implementation address
     IERC6551Registry public immutable registry; // The 6551 registry address
-    uint public immutable chainId = block.chainId; // The chainId of the network this contract is deployed
+    uint public immutable chainId = block.chainid; // The chainId of the network this contract is deployed
     address public immutable tokenContract = address(this); // The address of this contract
     uint salt = 0; // The salt to generate the account address
 
@@ -22,7 +22,7 @@ contract GitbountiesNFT is ERC721 {
         address _registry
     ) ERC721("GitbountiesNFT", "Bounties") {
         implementation = _implemenetaion;
-        registry = _registry;
+        registry = IERC6551Registry(_registry);
     }
 
     function getAccount(uint tokenId) public view returns (address) {
@@ -76,9 +76,8 @@ contract GitbountiesNFT is ERC721 {
         _afterTokenTransfer(owner, address(0), tokenId, 1);
     }
 
-    // function transferBounties(uint tokenId, address receiver) external payable {
-    //     transferToken(tokenId, receiver);
-    //     burn(tokenId);
-    // }
-
+//     function transferBounties(uint tokenId, address receiver) external payable {
+//         transferToken(tokenId, receiver);
+//         burn(tokenId);
+//     }
 }
