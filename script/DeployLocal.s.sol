@@ -12,6 +12,7 @@ contract DeployLocalScript is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
+        // Deploy contracts
         ERC6551Registry registry = new ERC6551Registry();
         Gitbounties6551Implementation gitbounties6551Implementation = new Gitbounties6551Implementation();
         GitbountiesNFT gitbountiesNFT = new GitbountiesNFT(
