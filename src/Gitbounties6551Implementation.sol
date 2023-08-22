@@ -9,9 +9,9 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 import "@openzeppelin/contracts/interfaces/IERC1271.sol";
 
 //6551 references
-import "../src/interfaces/IERC6551Account.sol";
-import "../src/interfaces/IERC6551Executable.sol";
-import "../src/lib/ERC6551AccountLib.sol";
+import "./interfaces/IERC6551Account.sol";
+import "./interfaces/IERC6551Executable.sol";
+import "./lib/ERC6551AccountLib.sol";
 
 contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IERC721Receiver, IERC6551Executable {
 
