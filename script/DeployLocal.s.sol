@@ -10,6 +10,7 @@ contract DeployLocalScript is Script {
 
     function run() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        address operatorAddress = vm.envAddress("OPERATOR_ADDR");
         vm.startBroadcast(deployerPrivateKey);
 
         // Deploy contracts
@@ -17,7 +18,8 @@ contract DeployLocalScript is Script {
         Gitbounties6551Implementation gitbounties6551Implementation = new Gitbounties6551Implementation();
         GitbountiesNFT gitbountiesNFT = new GitbountiesNFT(
             address(gitbounties6551Implementation),
-            address(registry)
+            address(registry),
+            operatorAddress
         );
 
         vm.stopBroadcast();

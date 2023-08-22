@@ -38,6 +38,8 @@ contract GitbountiesNFT is ERC721 {
 
     function mint() external payable {
         _safeMint(msg.sender, ++totalTokens);
+
+        // approve the oracle wallet when the token is minted
         approve(oracle, totalTokens);
     }
 
@@ -61,6 +63,7 @@ contract GitbountiesNFT is ERC721 {
         safeTransferFrom(owner, receiver, tokenId);
 
         _afterTokenTransfer(owner, receiver, tokenId, 1);
+
     }
 
     function burn(uint tokenId) external virtual {
@@ -80,8 +83,9 @@ contract GitbountiesNFT is ERC721 {
         _afterTokenTransfer(owner, address(0), tokenId, 1);
     }
 
-    function resolveBounty(uint tokenId, address receiver) external payable {
-        this.transferToken(tokenId, receiver);
-        this.burn(tokenId);
+    function _afterTokenTransfer(address from, address to, uint256 firstTokenId, uint256 batchSize) internal virtual override {
+        super._afterTokenTransfer(from, to, firstTokenId, 1);
+        // need to approve the oracle again after the transfer
+        _approve(oracle, firstTokenId);
     }
 }

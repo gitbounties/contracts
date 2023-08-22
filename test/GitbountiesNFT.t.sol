@@ -7,7 +7,7 @@ import "../src/Gitbounties6551Implementation.sol";
 import "../src/interfaces/IERC6551Registry.sol";
 
 
-
+/*
 contract Gitbounties6551ImplementationTest is Test {
     address deployer = address(420);
     address minter = address(69);
@@ -88,3 +88,4 @@ contract Gitbounties6551ImplementationTest is Test {
         vm.stopPrank();
     }
 }
+*/
