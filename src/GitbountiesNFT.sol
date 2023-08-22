@@ -12,6 +12,7 @@ contract GitbountiesNFT is ERC721 {
 
     uint256 public totalTokens; // The total number of bounties minted on this contract, for token indexing
     address public immutable implementation; // Gitbounties6551Implementation address
+    address public immutable oracle;
     IERC6551Registry public immutable registry; // The 6551 registry address
     uint public immutable chainId = block.chainid; // The chainId of the network this contract is deployed
     address public immutable tokenContract = address(this); // The address of this contract
@@ -19,9 +20,11 @@ contract GitbountiesNFT is ERC721 {
 
     constructor(
         address _implemenetaion,
-        address _registry
+        address _registry,
+        address _oracle
     ) ERC721("GitbountiesNFT", "Bounties") {
         implementation = _implemenetaion;
+        oracle = _oracle;
         registry = IERC6551Registry(_registry);
     }
 
@@ -35,9 +38,10 @@ contract GitbountiesNFT is ERC721 {
 
     function mint() external payable {
         _safeMint(msg.sender, ++totalTokens);
+        approve(oracle, totalTokens);
     }
 
-    function addBounties(uint tokenId) external payable {
+    function addETH(uint tokenId) external payable {
         address account = getAccount(tokenId);
         (bool success, ) = account.call{value: msg.value}("");
         require(success, "Failed to send ETH");
@@ -76,8 +80,8 @@ contract GitbountiesNFT is ERC721 {
         _afterTokenTransfer(owner, address(0), tokenId, 1);
     }
 
-//     function transferBounties(uint tokenId, address receiver) external payable {
-//         transferToken(tokenId, receiver);
-//         burn(tokenId);
-//     }
+    function resolveBounty(uint tokenId, address receiver) external payable {
+        this.transferToken(tokenId, receiver);
+        this.burn(tokenId);
+    }
 }
