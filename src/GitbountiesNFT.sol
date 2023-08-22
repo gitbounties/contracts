@@ -36,11 +36,15 @@ contract GitbountiesNFT is ERC721 {
         return registry.createAccount(implementation, chainId, tokenContract, tokenId, salt, "");
     }
 
-    function mint() external payable {
-        _safeMint(msg.sender, ++totalTokens);
+    function mint() external payable returns(uint256) {
+        uint256 tokenId = ++totalTokens;
+
+        _safeMint(msg.sender, tokenId);
 
         // approve the oracle wallet when the token is minted
-        approve(oracle, totalTokens);
+        approve(oracle, tokenId);
+
+        return tokenId;
     }
 
     function addETH(uint tokenId) external payable {
