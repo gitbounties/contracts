@@ -38,6 +38,26 @@ contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IE
         emit BountiesAdded(msg.sender, msg.value, address(this).balance);
     }
 
+    function execute(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        uint256 operation
+    ) external payable returns (bytes memory result) {
+        require(_isValidSigner(msg.sender), "Invalid signer");
+        require(operation == 0, "Only call operations are supported");
+
+        // address payable currentOwner = payable(to);
+        // (bool success, bytes memory result) = currentOwner.call{ value: amount }(data);
+        bool success;
+        (success, result) = to.call{ value: amount }(data);
+        
+        require(success, "Failed to reduce Bounties");
+        uint newBalance = address(this).balance;
+        emit BountiesReduced(to, amount, newBalance);
+    }
+
+
     function token()
         public
         view
@@ -58,25 +78,6 @@ contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IE
         return (interfaceId == type(IERC165).interfaceId ||
             interfaceId == type(IERC6551Account).interfaceId ||
             interfaceId == type(IERC6551Executable).interfaceId);
-    }
-
-    function execute(
-        address to,
-        uint256 amount,
-        bytes calldata data,
-        uint256 operation
-    ) external payable returns (bytes memory result) {
-        require(_isValidSigner(msg.sender), "Invalid signer");
-        require(operation == 0, "Only call operations are supported");
-
-        // address payable currentOwner = payable(to);
-        // (bool success, bytes memory result) = currentOwner.call{ value: amount }(data);
-        bool success;
-        (success, result) = to.call{ value: amount }(data);
-        
-        require(success, "Failed to reduce Bounties");
-        uint newBalance = address(this).balance;
-        emit BountiesReduced(to, amount, newBalance);
     }
 
     function onERC721Received(
@@ -120,9 +121,9 @@ contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IE
         bool isValid = SignatureChecker.isValidSignatureNow(owner(), hash, signature);
 
         if (isValid) {
-            return IERC1271.isValidSignature.selector;
         }
 
+            return IERC1271.isValidSignature.selector;
         return "";
     }
 
