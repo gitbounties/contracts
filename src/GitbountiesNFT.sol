@@ -2,10 +2,10 @@
 pragma solidity ^0.8.19;
 
 import {Base64} from "base64-sol/base64.sol";
-import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "./lib/ERC6551AccountLib.sol";
-import "./interfaces/IERC6551Registry.sol";
+import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
+import "openzeppelin-contracts/token/ERC721/ERC721.sol";
+import "erc6551/src/lib/ERC6551AccountLib.sol";
+import "erc6551/src/interfaces/IERC6551Registry.sol";
 
 contract GitbountiesNFT is ERC721 {
     using Strings for uint256;

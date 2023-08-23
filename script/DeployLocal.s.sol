@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 import "forge-std/Script.sol";
 import "../src/GitbountiesNFT.sol";
 import "../src/Gitbounties6551Implementation.sol";
-import "../src/ERC6551Registry.sol";
+import "erc6551/src/ERC6551Registry.sol";
 
 contract DeployLocalScript is Script {
 

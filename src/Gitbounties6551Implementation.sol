@@ -1,19 +1,18 @@
 // SPDX-License-Identifier: MIT 
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
-import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
-import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
-import "@openzeppelin/contracts/interfaces/IERC1271.sol";
+import "openzeppelin-contracts/utils/introspection/IERC165.sol";
+import "openzeppelin-contracts/token/ERC721/IERC721.sol";
+import "openzeppelin-contracts/token/ERC721/IERC721Receiver.sol";
+import "openzeppelin-contracts/utils/cryptography/SignatureChecker.sol";
+import "openzeppelin-contracts/token/ERC1155/IERC1155Receiver.sol";
+import "openzeppelin-contracts/interfaces/IERC1271.sol";
 
 //6551 references
-import "./interfaces/IERC6551Account.sol";
-import "./interfaces/IERC6551Executable.sol";
-import "./lib/ERC6551AccountLib.sol";
+import "erc6551/src/interfaces/IERC6551Account.sol";
+import "erc6551/src/lib/ERC6551AccountLib.sol";
 
-contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IERC721Receiver, IERC6551Executable {
+contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IERC721Receiver {
 
     //// ERRORS ////
     error GitbountiesDoesNotAccept721s();
@@ -38,14 +37,12 @@ contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IE
         emit BountiesAdded(msg.sender, msg.value, address(this).balance);
     }
 
-    function execute(
+    function executeCall(
         address to,
         uint256 amount,
-        bytes calldata data,
-        uint256 operation
+        bytes calldata data
     ) external payable returns (bytes memory result) {
         require(_isValidSigner(msg.sender), "Invalid signer");
-        require(operation == 0, "Only call operations are supported");
 
         // address payable currentOwner = payable(to);
         // (bool success, bytes memory result) = currentOwner.call{ value: amount }(data);
@@ -76,8 +73,7 @@ contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IE
 
     function supportsInterface(bytes4 interfaceId) external pure returns (bool) {
         return (interfaceId == type(IERC165).interfaceId ||
-            interfaceId == type(IERC6551Account).interfaceId ||
-            interfaceId == type(IERC6551Executable).interfaceId);
+            interfaceId == type(IERC6551Account).interfaceId);
     }
 
     function onERC721Received(
@@ -126,13 +122,4 @@ contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IE
             return IERC1271.isValidSignature.selector;
         return "";
     }
-
-    function isValidSigner(address signer, bytes calldata) external view returns (bytes4) {
-        if (_isValidSigner(signer)) {
-            return IERC6551Account.isValidSigner.selector;
-        }
-
-        return bytes4(0);
-    }
-
 }
