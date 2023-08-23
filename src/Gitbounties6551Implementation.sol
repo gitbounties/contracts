@@ -117,9 +117,9 @@ contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IE
         bool isValid = SignatureChecker.isValidSignatureNow(owner(), hash, signature);
 
         if (isValid) {
-        }
-
             return IERC1271.isValidSignature.selector;
+        }
+         
         return "";
     }
 }
