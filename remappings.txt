@@ -1,4 +1,4 @@
 ds-test/=lib/forge-std/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
-openzeppelin-contracts/=lib/openzeppelin-contracts/
+openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/
 base64-sol/=src/node_modules/base64-sol/
