@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "base64-sol": "^1.1.0"
+    "base64-sol": "1.1.0"
   }
 }

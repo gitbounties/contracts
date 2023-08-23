@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 import "forge-std/Test.sol";
 import "../src/GitbountiesNFT.sol";
 import "../src/Gitbounties6551Implementation.sol";
-import "../src/interfaces/IERC6551Registry.sol";
+import "erc6551/src/interfaces/IERC6551Registry.sol";
 
 
 /*

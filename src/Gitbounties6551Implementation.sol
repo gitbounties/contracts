@@ -9,11 +9,10 @@ import "openzeppelin-contracts/contracts/token/ERC1155/IERC1155Receiver.sol";
 import "openzeppelin-contracts/contracts/interfaces/IERC1271.sol";
 
 //6551 references
-import "./interfaces/IERC6551Account.sol";
-import "./interfaces/IERC6551Executable.sol";
-import "./lib/ERC6551AccountLib.sol";
+import "erc6551/src/interfaces/IERC6551Account.sol";
+import "erc6551/src/lib/ERC6551AccountLib.sol";
 
-contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IERC721Receiver, IERC6551Executable {
+contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IERC721Receiver {
 
     //// ERRORS ////
     error GitbountiesDoesNotAccept721s();
@@ -38,11 +37,10 @@ contract Gitbounties6551Implementation is IERC165, IERC1271, IERC6551Account, IE
         emit BountiesAdded(msg.sender, msg.value, address(this).balance);
     }
 
-    function execute(
+    function executeCall(
         address to,
         uint256 amount,
         bytes calldata data,
-        uint256 operation
     ) external payable returns (bytes memory result) {
         require(_isValidSigner(msg.sender), "Invalid signer");
         require(operation == 0, "Only call operations are supported");
