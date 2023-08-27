@@ -10,6 +10,16 @@ import "erc6551/src/interfaces/IERC6551Registry.sol";
 contract GitbountiesNFT is ERC721 {
     using Strings for uint256;
 
+    // TODO store this data off chain
+    struct Metadata {
+        // Title of the issue
+        string title;
+        /// Owner of the repository (OWNER/REPO)
+        string owner;
+        /// Name of the repository (OWNER/REPO)
+        string repo;
+    }
+
     uint256 public totalTokens; // The total number of bounties minted on this contract, for token indexing
     address public immutable implementation; // Gitbounties6551Implementation address
     address public immutable oracle;
@@ -95,6 +105,7 @@ contract GitbountiesNFT is ERC721 {
         _requireMinted(tokenId);
         address account = getAccount(tokenId);
 
+        // TODO hardcoded for now
         bytes memory image = abi.encodePacked(
             "data:image/svg+xml;base64,",
             Base64.encode(
@@ -119,7 +130,7 @@ contract GitbountiesNFT is ERC721 {
                         '        font-family: "Open Sans", Arial, sans-serif;',
                         '    }',
                         '    .normal-text {',
-                        '        fill: var(--text-color);        ',
+                        '        fill: var(--text-color);',
                         '        white-space: normal;',
                         '        word-wrap: break-word;',
                         '        max-width: 256px;',
@@ -141,18 +152,36 @@ contract GitbountiesNFT is ERC721 {
                         '  <text x="128" y="240" font-size="10" class="normal-text" text-anchor="middle" >',
                         '    0.01 ETH',
                         '  </text>',
-                        '</svg>',
+                        '</svg>'
                     )
                 )
             )
         );
+
         // check if bounty has been closed
-        if (ownerOf(tokenId) == account) {
-        } else {}
+        // if (ownerOf(tokenId) == account) {
+        // } else {}
 
-
-
-        string memory uri = "";
+        string memory uri = string(
+            abi.encodePacked(
+                "data:application/json;base64,",
+                Base64.encode(
+                    bytes(
+                        abi.encodePacked(
+                            '{"name":"GITBOUNTIES", "image":"',
+                            image,
+                            '",',
+                            '"description": "A bounty for an open source contribution. Solve it to get the reward!",',
+                            '"attributes":[{"trait_type":"Balance","value":"',
+                            '0.0', // TODO: fetch the value inside the bounty
+                            ' ETH"},{"trait_type":"Status","value":"Open"}]',
+                            '}'
+                        )
+                    )
+                )
+            )
+        );
         return uri;
     }
+
 }
