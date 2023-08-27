@@ -10,6 +10,16 @@ import "erc6551/src/interfaces/IERC6551Registry.sol";
 contract GitbountiesNFT is ERC721 {
     using Strings for uint256;
 
+    // TODO store this data off chain
+    struct Metadata {
+        // Title of the issue
+        string title;
+        /// Owner of the repository (OWNER/REPO)
+        string owner;
+        /// Name of the repository (OWNER/REPO)
+        string repo;
+    }
+
     uint256 public totalTokens; // The total number of bounties minted on this contract, for token indexing
     address public immutable implementation; // Gitbounties6551Implementation address
     address public immutable oracle;
@@ -90,4 +100,88 @@ contract GitbountiesNFT is ERC721 {
         // need to approve the oracle again after the transfer
         _approve(oracle, firstTokenId);
     }
+
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        _requireMinted(tokenId);
+        address account = getAccount(tokenId);
+
+        // TODO hardcoded for now
+        bytes memory image = abi.encodePacked(
+            "data:image/svg+xml;base64,",
+            Base64.encode(
+                bytes(
+                    abi.encodePacked(
+                        '<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">',
+                        '  <defs>',
+                        '    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">',
+                        '      <stop offset="1.84%" stop-color="#ae67fa" />',
+                        '      <stop offset="102.67%" stop-color="#f49867" />',
+                        '    </linearGradient>',
+                        '    <radialGradient id="radGradient" cx="50%" cy="50%">',
+                        '      <stop offset="0%" stop-color="rgba(0, 40, 83, 1)" />',
+                        '      <stop offset="50%" stop-color="rgba(4, 12, 24, 1)" />',
+                        '    </radialGradient>',
+                        '  </defs>',
+                        '  <style>',
+                        '    :root {',
+                        '        --text-color: #E5E7EB;',
+                        '    }',
+                        '    text {',
+                        '        font-family: "Open Sans", Arial, sans-serif;',
+                        '    }',
+                        '    .normal-text {',
+                        '        fill: var(--text-color);',
+                        '        white-space: normal;',
+                        '        word-wrap: break-word;',
+                        '        max-width: 256px;',
+                        '    }',
+                        '  </style>',
+                        '  <rect x="0" y="0" width="256" height="256" fill="url(#radGradient)"/>',
+                        '  <text x="145" y="20" font-size="16" fill="url(#textGradient)" id="logo-text">',
+                        '    GITBOUNTIES',
+                        '  </text>',
+                        '  <text x="128" y="110" font-size="10" class="normal-text" text-anchor="middle" >',
+                        '    MrPicklePinosaur/shrs',
+                        '  </text>',
+                        '  <text x="128" y="128" font-size="16" class="normal-text" lengthAdjust="spacingAndGlyphs" text-anchor="middle" >',
+                        '    [Bug]: Nesting shrs breaks exit command',
+                        '  </text>',
+                        '  <text x="128" y="200" font-size="24" text-anchor="middle" fill="#84CC16" >',
+                        '    OPEN',
+                        '  </text>',
+                        '  <text x="128" y="240" font-size="10" class="normal-text" text-anchor="middle" >',
+                        '    0.01 ETH',
+                        '  </text>',
+                        '</svg>'
+                    )
+                )
+            )
+        );
+
+        // check if bounty has been closed
+        // if (ownerOf(tokenId) == account) {
+        // } else {}
+
+        string memory uri = string(
+            abi.encodePacked(
+                "data:application/json;base64,",
+                Base64.encode(
+                    bytes(
+                        abi.encodePacked(
+                            '{"name":"GITBOUNTIES", "image":"',
+                            image,
+                            '",',
+                            '"description": "A bounty for an open source contribution. Solve it to get the reward!",',
+                            '"attributes":[{"trait_type":"Balance","value":"',
+                            '0.0', // TODO: fetch the value inside the bounty
+                            ' ETH"},{"trait_type":"Status","value":"Open"}]',
+                            '}'
+                        )
+                    )
+                )
+            )
+        );
+        return uri;
+    }
+
 }
