@@ -34,3 +34,8 @@ Then we can check the owner of the NFT
 ```sh
 cast call <nft-contract-addr> "ownerOf(uint256)" 1
 ```
+
+## Credits
+
+- [6551piggybank](https://github.com/nnnnicholas/6551piggybank): for a large part of the contract implementation
+
