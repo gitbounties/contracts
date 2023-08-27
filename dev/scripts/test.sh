@@ -23,10 +23,15 @@ cast send $CONTRACT "addETH(uint256)" $tokenId --value 69ether --private-key $U1
 
 owner=$(cast call $CONTRACT "ownerOf(uint256)" $tokenId)
 balance=$(cast b $U1_ADDR)
+cast send $CONTRACT "addETH(uint256)" $tokenId --value 69ether --private-key $U1_KEY
 
 echo "=-=-=-=-=-="
 echo "owner of bounty is $owner"
 echo "user 1 has a balance of $balance"
+
+echo "token URI =-=-=-=-=-="
+cast call $CONTRACT "tokenURI(uint256)" $tokenId
+
 
 # operator transfers bounty to user 2 and burns it
 echo "transfer =-=-=-="

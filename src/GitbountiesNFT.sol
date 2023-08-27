@@ -162,21 +162,19 @@ contract GitbountiesNFT is ERC721 {
         // if (ownerOf(tokenId) == account) {
         // } else {}
 
-        string memory uri = string(
-            abi.encodePacked(
-                "data:application/json;base64,",
-                Base64.encode(
-                    bytes(
-                        abi.encodePacked(
-                            '{"name":"GITBOUNTIES", "image":"',
-                            image,
-                            '",',
-                            '"description": "A bounty for an open source contribution. Solve it to get the reward!",',
-                            '"attributes":[{"trait_type":"Balance","value":"',
-                            '0.0', // TODO: fetch the value inside the bounty
-                            ' ETH"},{"trait_type":"Status","value":"Open"}]',
-                            '}'
-                        )
+        string memory uri = string.concat(
+            string("data:application/json;base64,"),
+            Base64.encode(
+                bytes(
+                    abi.encodePacked(
+                        '{"name":"GITBOUNTIES", "image":"',
+                        image,
+                        '",',
+                        '"description": "A bounty for an open source contribution. Solve it to get the reward!",',
+                        '"attributes":[{"trait_type":"Balance","value":"',
+                        '0.0', // TODO: fetch the value inside the bounty
+                        ' ETH"},{"trait_type":"Status","value":"Open"}]',
+                        '}'
                     )
                 )
             )
