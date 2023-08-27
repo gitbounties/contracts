@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {Base64} from "base64-sol/base64.sol";
 import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
+import "openzeppelin-contracts/utils/Base64.sol";
 import "openzeppelin-contracts/token/ERC721/ERC721.sol";
 import "erc6551/src/lib/ERC6551AccountLib.sol";
 import "erc6551/src/interfaces/IERC6551Registry.sol";
