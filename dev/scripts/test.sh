@@ -29,16 +29,16 @@ echo "owner of bounty is $owner"
 echo "user 1 has a balance of $balance"
 
 # operator transfers bounty to user 2 and burns it
-# echo "transfer =-=-=-="
-# cast send $CONTRACT "transferToken(uint256, address)" $tokenId $U2_ADDR --private-key $OP_KEY
-# echo "burn =-=-=-="
-# cast send $CONTRACT "burn(uint256)" $tokenId --private-key $OP_KEY
-# 
-# owner=$(cast call $CONTRACT "ownerOf(uint256)" $tokenId)
-# balance1=$(cast b $U1_ADDR)
-# balance2=$(cast b $U2_ADDR)
-# 
-# echo "=-=-=-=-=-="
-# echo "owner of bounty is $owner"
-# echo "user 1 has a balance of $balance1"
-# echo "user 2 has a balance of $balance2"
+echo "transfer =-=-=-="
+cast send $CONTRACT "transferToken(uint256, address)" $tokenId $U2_ADDR --private-key $OP_KEY
+echo "burn =-=-=-="
+cast send $CONTRACT "burn(uint256)" $tokenId --private-key $OP_KEY
+
+owner=$(cast call $CONTRACT "ownerOf(uint256)" $tokenId)
+balance1=$(cast b $U1_ADDR)
+balance2=$(cast b $U2_ADDR)
+
+echo "=-=-=-=-=-="
+echo "owner of bounty is $owner"
+echo "user 1 has a balance of $balance1"
+echo "user 2 has a balance of $balance2"
